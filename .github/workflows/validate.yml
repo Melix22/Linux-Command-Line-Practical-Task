@@ -1,0 +1,29 @@
+name: Validate practical project
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Check required project files
+        run: |
+          test -f README.md
+          test -f commands/step-by-step-commands.md
+          test -f scripts/01-create-user.sh
+          test -f scripts/02-complete-project.sh
+          test -f scripts/03-final-checks.sh
+          test -d evidence
+          test -d screenshots
+
+      - name: Check shell script syntax
+        run: |
+          bash -n scripts/01-create-user.sh
+          bash -n scripts/02-complete-project.sh
+          bash -n scripts/03-final-checks.sh
